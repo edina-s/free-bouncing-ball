@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Animation - Circle Free motion Example</title>
+
+    <style>
+        #my-canvas {
+            border: #cacaca 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="my-canvas" width="400" height="300">
+        Your web browser does not suport canvas element
+    </canvas>
+
+    <script>
+
+
+        window.onload = init;
+
+        let circleX = 60;
+        let circleY = 60;
+        let circleRadius = 30;
+        let directionX = 1;
+        let directionY = 1;
+        let speed = 5;
+
+        function init() {
+            let myCanvas = document.getElementById("my-canvas");
+            
+            if (myCanvas.getContext) {
+                let ctx = myCanvas.getContext('2d');
+
+                circleX = randomNumber(circleRadius, ctx.canvas.width - (circleRadius));
+                circleY = randomNumber(circleRadius, ctx.canvas.height - (circleRadius));
+           
+                update(ctx);
+
+            } else {
+                alert("Canvas is not suported")
+            }
+        } 
+
+        function update(ctx){
+
+            ctx.clearRect(0, 0, 400, 300);
+
+            if (circleX > ctx.canvas.width - circleRadius) 
+                directionX = -directionX;
+            if (circleX < circleRadius)
+                directionX = -directionX;
+            if (circleY > ctx.canvas.height - circleRadius)
+                directionY = -directionY;
+            if (circleY < circleRadius)
+                directionY = -directionY
+            
+                
+
+            circleX +=directionX * speed;
+            circleY +=directionY * speed;
+
+            ctx.beginPath();
+            ctx.fillStyle = 'blue';
+            ctx.arc(circleX, circleY, circleRadius, 0, 2*Math.PI);
+            ctx.fill();
+
+            requestAnimationFrame(function() {
+                update(ctx);
+            });
+
+        }
+
+        function randomNumber(min, max) {
+            return Math.floor(Math.random() * (max-min) + min);
+        }
+
+
+   
+
+    </script>
+</body>
+
+</html>
